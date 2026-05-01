@@ -1,0 +1,66 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Beckett
+// 
+// Create Date: 03/28/2023 01:35:20 PM
+// Design Name: 
+// Module Name: le9_tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module test;
+  reg en, clk, reset;
+  wire [3:0] ones_cnt, tens_cnt;
+  wire ones_tc; // Tens counter
+  wire system_tc; // Pulse when counter reaches 39
+    
+  // Instantiate design under test
+  state_cntr ones(
+  .en(en), // Enable signal
+  .clk(clk), // Clock
+  .reset(reset), // Reset
+  .tc(4'd9), // Rollover value is 9 
+  .cnt(ones_cnt), // Count value
+  .tc_pulse(ones_tc)); // Sets the pulse high when count = 9
+  
+  state_cntr tens(
+  .en(ones_cnt), // Enabled with counter from previous module instantiation
+  .clk(clk), // Clock
+  .reset(reset), // Reset
+  .tc(4'd3), // Rollover value is 3
+  .cnt(tens_cnt), // Count value
+  .tc_pulse(tens_tc)); // Sets the pulse high when count = 3
+  
+    initial begin
+    en = 0; // Initialize en, clk, and reset
+    clk = 0;
+    reset = 0;
+    #2 // Hold for 2ns
+    reset = 1; // Reset goes high
+    #2 // Hold for 2ns
+    reset = 0; // Reset goes low
+    #6 // Hold for 6ns
+    en = 1; // Enable goes high
+    #800 // Hold for 800ns
+    $finish;
+    //$display("Value of c in hex is %h", c);
+    //$display("Parity of c is %b", parity);
+  end
+  
+  always begin // Clock cycle is 20ns
+    #10
+    clk = ~clk;
+  end
+  
+endmodule
