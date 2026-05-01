@@ -1,0 +1,47 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: Beckett
+// 
+// Create Date: 03/28/2023 01:35:37 PM
+// Design Name: 
+// Module Name: le9
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+module state_cntr(
+    input en,
+    input clk,
+    input reset,
+    output tc_pulse,
+    input [3:0] tc,
+    output reg [3:0]cnt
+    );
+    
+
+// flip-flops (state memeory)
+always @(posedge clk or posedge reset) begin
+    if (reset==1'b1) begin cnt<=4'd0; // reset to zero 
+    end 
+    
+    else if (en==1'b1) begin // Only count when en=1
+        if (cnt >= tc) cnt <= 4'd0; // If counter is >= tc then reset the counter
+        else cnt <= cnt + 1'b1; // Otherwise add 1 to the count
+    end
+    
+end
+
+// Output logic
+assign tc_pulse = en && (cnt == tc);
+
+endmodule
