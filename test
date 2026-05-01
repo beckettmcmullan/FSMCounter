@@ -30,17 +30,17 @@ module test;
   .en(en), // Enable signal
   .clk(clk), // Clock
   .reset(reset), // Reset
-  .tc(4'd9), // Rollover value is 9 
+  .tc(4'd4), // Rollover value is 4 
   .cnt(ones_cnt), // Count value
-  .tc_pulse(ones_tc)); // Sets the pulse high when count = 9
+  .tc_pulse(ones_tc)); // Sets the pulse high when count = 5
   
   state_cntr tens(
   .en(ones_cnt), // Enabled with counter from previous module instantiation
   .clk(clk), // Clock
   .reset(reset), // Reset
-  .tc(4'd3), // Rollover value is 3
+  .tc(4'd5), // Rollover value is 5
   .cnt(tens_cnt), // Count value
-  .tc_pulse(tens_tc)); // Sets the pulse high when count = 3
+  .tc_pulse(tens_tc)); // Sets the pulse high when count = 4
   
     initial begin
     en = 0; // Initialize en, clk, and reset
